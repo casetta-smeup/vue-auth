@@ -12,6 +12,7 @@
           id="username"
           type="text"
           v-model="username"
+          v-bind:disabled="isLoading"
           >
       </div>
 
@@ -22,6 +23,7 @@
           id="password"
           type="password"
           v-model="password"
+          v-bind:disabled="isLoading"
           >
       </div>
 
@@ -29,10 +31,20 @@
         v-if="errorMsgs.length > 0"
         class="errorMessages">
 
-        <li v-for="errorMsg in errorMsgs" :key="errorMsg">{{errorMsg}}</li>
+        <li
+          v-for="errorMsg in errorMsgs"
+          :key="errorMsg">
+
+          {{errorMsg}}
+        </li>
       </ul>
 
-      <button type="submit">
+      <loading></loading>
+
+      <button
+        v-show="!isLoading"
+        type="submit">
+
         Login
       </button>
     </div>
@@ -40,8 +52,14 @@
 </template>
 
 <script>
+import Loading from "./Loading";
+
 export default {
   name: "loginComponent",
+
+  components: {
+    loading: Loading
+  },
 
   data() {
     return {
@@ -56,7 +74,7 @@ export default {
     onSubmit() {
       this.validateForm();
 
-      if (this.valid) {
+      if (!this.isLoading && this.valid) {
         const username = this.username;
         const password = this.password;
 
@@ -83,6 +101,12 @@ export default {
       }
 
       this.valid = this.errorMsgs.length == 0;
+    }
+  },
+
+  computed: {
+    isLoading() {
+      return this.$store.state.loading;
     }
   }
 };

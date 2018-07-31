@@ -1,9 +1,11 @@
 export const login = ({ commit }, payload) => {
-  return new Promise(resolve =>
-    setTimeout(function() {
+  return new Promise(resolve => {
+    commit("setLoading", true);
+    return setTimeout(function() {
       // TODO fare chiamata al server, passando username e password inclusi nel payload
       commit("setUsername", payload.username);
+      commit("setLoading", false);
       resolve();
-    }, 1000)
-  );
+    }, 2500);
+  });
 };

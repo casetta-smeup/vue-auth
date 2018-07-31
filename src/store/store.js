@@ -10,10 +10,15 @@ export default new Vuex.Store({
     user: {
       username: "",
       role: ""
-    }
+    },
+    loading: false
   },
 
   mutations: {
+    setLoading(state, loading) {
+      state.loading = loading;
+    },
+
     setUsername(state, username) {
       state.user.username = username;
     },
