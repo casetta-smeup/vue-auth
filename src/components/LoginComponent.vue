@@ -25,12 +25,12 @@
           >
       </div>
 
-      <div
-        v-if="errorMsg"
-        class="errorMessage">
+      <ul
+        v-if="errorMsgs.length > 0"
+        class="errorMessages">
 
-        {{ errorMsg }}
-      </div>
+        <li v-for="errorMsg in errorMsgs" :key="errorMsg">{{errorMsg}}</li>
+      </ul>
 
       <button type="submit">
         Login
@@ -49,20 +49,32 @@ export default {
     return {
       username: "",
       password: "",
-      errorMsg: "",
-      disabled: true
+      errorMsgs: [],
+      valid: false
     };
   },
 
   methods: {
     onSubmit() {
-      this.errorMsg = "";
+      this.validateForm();
 
-      if (this.username.length > 0 && this.password.length > 0) {
+      if (this.valid) {
         router.push("authorization");
-      } else {
-        this.errorMsg = "Username/password non presenti";
       }
+    },
+
+    validateForm() {
+      this.errorMsgs = [];
+
+      if (this.username.trim().length == 0) {
+        this.errorMsgs.push("Username: campo obbligatorio");
+      }
+
+      if (this.password.trim().length == 0) {
+        this.errorMsgs.push("Password: campo obbligatorio");
+      }
+
+      this.valid = this.errorMsgs.length == 0;
     }
   }
 };
@@ -88,7 +100,7 @@ export default {
     margin: 0.5rem;
   }
 
-  .errorMessage {
+  .errorMessages {
     background: red;
     color: white;
     margin: 0.5rem;
