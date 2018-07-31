@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import router from "@/router";
-
 export default {
   name: "loginComponent",
 
@@ -59,7 +57,17 @@ export default {
       this.validateForm();
 
       if (this.valid) {
-        router.push("authorization");
+        const username = this.username;
+        const password = this.password;
+
+        this.$store
+          .dispatch("login", {
+            username,
+            password
+          })
+          .then(() => {
+            this.$router.push("authorization");
+          });
       }
     },
 
@@ -82,7 +90,7 @@ export default {
 
 <style lang="scss">
 .header {
-  background-color: red;
+  background-color: deepskyblue;
   color: white;
   padding: 0.5rem;
 }
