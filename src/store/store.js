@@ -11,10 +11,15 @@ export default new Vuex.Store({
       username: "",
       role: ""
     },
+    authorizations: [],
     loading: false
   },
 
   mutations: {
+    setAuthorizations(state, authorizations) {
+      state.authorizations = authorizations;
+    },
+
     setLoading(state, loading) {
       state.loading = loading;
     },

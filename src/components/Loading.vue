@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="isLoading"
-    class="loading">
-
+  <div class="loading">
     Loading
     <span class="mdi mdi-refresh"></span>
   </div>
@@ -10,11 +7,7 @@
 
 <script>
 export default {
-  computed: {
-    isLoading: function() {
-      return this.$store.state.loading;
-    }
-  }
+  name: "Loading"
 };
 </script>
 
