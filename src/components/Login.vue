@@ -6,43 +6,38 @@
       </div>
 
       <div class="content">
-        <div class="username">
+        <div
+          class="username"
+          :class="{ 'form-group-error': $v.username.$error }">
+
           <label for="username">Username:</label>
 
           <input
             id="username"
             type="text"
-            v-model="username"
+            v-model.trim="$v.username.$model"
             v-bind:disabled="isLoading"
             >
         </div>
 
-        <div class="password">
+        <div
+          class="password"
+          :class="{ 'form-group-error': $v.password.$error }">
+
           <label for="password">Password:</label>
 
           <input
             id="password"
             type="password"
-            v-model="password"
+            v-model.trim="$v.password.$model"
             v-bind:disabled="isLoading"
             >
         </div>
 
-        <ul
-          v-if="errorMsgs.length > 0"
-          class="errorMessages">
-
-          <li
-            v-for="errorMsg in errorMsgs"
-            :key="errorMsg">
-
-            {{errorMsg}}
-          </li>
-        </ul>
-
         <loading v-if="isLoading"></loading>
 
         <button
+          :disabled="$v.$invalid"
           v-show="!isLoading"
           type="submit">
 
@@ -55,6 +50,7 @@
 
 <script>
 import Loading from "./Loading";
+import { required } from 'vuelidate/lib/validators';
 
 export default {
   name: "loginComponent",
@@ -74,9 +70,7 @@ export default {
 
   methods: {
     onSubmit() {
-      this.validateForm();
-
-      if (!this.isLoading && this.valid) {
+      if (!this.isLoading && !this.$v.$invalid) {
         const username = this.username;
         const password = this.password;
 
@@ -89,26 +83,21 @@ export default {
             this.$router.push("authorization");
           });
       }
-    },
-
-    validateForm() {
-      this.errorMsgs = [];
-
-      if (this.username.trim().length == 0) {
-        this.errorMsgs.push("Username: campo obbligatorio");
-      }
-
-      if (this.password.trim().length == 0) {
-        this.errorMsgs.push("Password: campo obbligatorio");
-      }
-
-      this.valid = this.errorMsgs.length == 0;
     }
   },
 
   computed: {
     isLoading() {
       return this.$store.state.loading;
+    }
+  },
+
+  validations: {
+    username: {
+      required
+    },
+    password: {
+      required
     }
   }
 };
@@ -139,6 +128,12 @@ export default {
       display: flex;
       flex-direction: column;
       margin: 0.5rem;
+
+      &.form-group-error {
+        label {
+          color: red;
+        }
+      }
     }
 
     .errorMessages {

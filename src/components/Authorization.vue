@@ -15,6 +15,15 @@
           {{ auth.descr }}
         </li>
       </ul>
+
+      <form @submit.prevent="onSubmit">
+        <button
+          type="button"
+          @click="onSubmit">
+
+          Mi sembra onesto
+        </button>
+      </form>
     </div>
   </div>
 </template>
@@ -37,6 +46,12 @@ export default {
 
   created() {
     this.$store.dispatch("loadAuthorizations");
+  },
+
+  methods: {
+    onSubmit() {
+      this.$router.go(-1);
+    }
   },
 
   computed: {
