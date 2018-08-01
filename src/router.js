@@ -18,6 +18,10 @@ export default new Router({
       path: "/authorization",
       name: "authorization",
       component: Authorization
+    },
+    {
+      path: "*",
+      redirect: "/"
     }
   ]
 });
